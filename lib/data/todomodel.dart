@@ -9,36 +9,36 @@ List<TodoModel> todoModelFromJson(String str) => List<TodoModel>.from(json.decod
 String todoModelToJson(List<TodoModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TodoModel {
-    final int id;
     final String name;
-    final int phonenumber;
+    final String phonenumber;
+    final String id;
 
     TodoModel({
-        required this.id,
         required this.name,
         required this.phonenumber,
+        required this.id,
     });
 
     TodoModel copyWith({
-        int? id,
         String? name,
-        int? phonenumber,
+        String? phonenumber,
+        String? id,
     }) => 
         TodoModel(
-            id: id ?? this.id,
             name: name ?? this.name,
             phonenumber: phonenumber ?? this.phonenumber,
+            id: id ?? this.id,
         );
 
     factory TodoModel.fromJson(Map<String, dynamic> json) => TodoModel(
-        id: json["id"],
         name: json["name"],
         phonenumber: json["phonenumber"],
+        id: json["id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
         "name": name,
         "phonenumber": phonenumber,
+        "id": id,
     };
 }

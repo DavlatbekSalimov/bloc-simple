@@ -1,5 +1,6 @@
 import 'package:blocappf/countpage/bloc/counter_bloc.dart';
 import 'package:blocappf/crudpage/home_page.dart';
+import 'package:blocappf/cubitpages/pages/counter_page_in_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,11 +39,23 @@ class CounterPage extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) => const HomePage()));
-        },
-        child: const Icon(Icons.arrow_forward_ios_outlined),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const CounterPageCubit()));
+            },
+            child: const Icon(Icons.build_circle_rounded),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const HomePage()));
+            },
+            child: const Icon(Icons.arrow_forward_ios_outlined),
+          ),
+        ],
       ),
     );
   }

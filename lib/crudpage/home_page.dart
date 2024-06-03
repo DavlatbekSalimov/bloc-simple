@@ -1,5 +1,6 @@
 import 'package:blocappf/crudpage/bloc/todo_bloc.dart';
 import 'package:blocappf/data/todomodel.dart';
+import 'package:blocappf/crudpageservices/todo_services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +12,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Todo List'),
+        title: const Text('Todo List in Bloc'),
       ),
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
@@ -86,49 +87,61 @@ class HomePage extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          final taskNameController = TextEditingController();
-          final taskPhoneController = TextEditingController();
-          showDialog(
-            context: context,
-            builder: (_) {
-              return Dialog(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        controller: taskNameController,
-                        decoration: const InputDecoration(labelText: 'Task Name'),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => TodoServerPage()));
+            },
+            child: Icon(Icons.wifi),
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () {
+              final taskNameController = TextEditingController();
+              final taskPhoneController = TextEditingController();
+              showDialog(
+                context: context,
+                builder: (_) {
+                  return Dialog(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextField(
+                            controller: taskNameController,
+                            decoration: const InputDecoration(labelText: 'Task Name'),
+                          ),
+                          TextField(
+                            controller: taskPhoneController,
+                            decoration: const InputDecoration(labelText: 'Phone Number'),
+                            keyboardType: TextInputType.phone,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.read<TodoBloc>().add(AddTodo(
+                                    TodoModel(
+                                      id: DateTime.now().millisecondsSinceEpoch.toString(),
+                                      name: taskNameController.text,
+                                      phonenumber: taskPhoneController.text,
+                                    ),
+                                  ));
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Save'),
+                          ),
+                        ],
                       ),
-                      TextField(
-                        controller: taskPhoneController,
-                        decoration: const InputDecoration(labelText: 'Phone Number'),
-                        keyboardType: TextInputType.phone,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<TodoBloc>().add(AddTodo(
-                                TodoModel(
-                                  id: DateTime.now().millisecondsSinceEpoch,
-                                  name: taskNameController.text,
-                                  phonenumber: int.parse(taskPhoneController.text),
-                                ),
-                              ));
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Save'),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
-        child: const Icon(Icons.add),
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
