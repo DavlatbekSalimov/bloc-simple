@@ -7,7 +7,7 @@ class TodoRepo {
   final _streamController = StreamController<List<TodoModel>>.broadcast();
 
   Stream<List<TodoModel>> subscribeToStream() {
-    _streamController.sink.add(todos);
+    _streamController.sink.add(todos); // Emit current todos initially
     return _streamController.stream;
   }
 
